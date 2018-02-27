@@ -2,7 +2,7 @@
   "name": "currency-conversion",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/1martinsafar/currency-conversion#readme",
   "dependencies": {
-    "express": "^4.13.4"
+    "body-parser": "^1.15.2",
+    "express": "^4.13.4",
+    "morgan": "^1.7.0"
   }
 }
