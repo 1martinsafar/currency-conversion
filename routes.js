@@ -12,13 +12,25 @@ console.log(stats);
 // 1.
 // GET the Most popular destination currency
 router.get("/popular", (req, res) => {
-  console.log(">>> Getting MOST POPULAR.");
+  console.log(">>> Getting MOST POPULAR DESTINATION.");
+  const destinations = stats.mostPopular;
   let reply;
-  if (stats.mostPopular.length > 0) {
-    res.json(stats.mostPopular[0]);
-  } else {
-    res.json(stats.mostPopular);
+  let count = 0;
+  let index = 0;
+
+  for (let i = 0; i < destinations.length; i++) {
+    if (destinations[i]["conversions"] > count) {
+      count = destinations[i]["conversions"];
+      index = i;
+    }
   }
+  res.send(destinations[index]["currency"]);
+  // let reply;
+  // if (stats.mostPopular.length > 0) {
+  //   res.json(stats.mostPopular[0]);
+  // } else {
+  //   res.json(stats.mostPopular);
+  // }
 });
 
 // POST

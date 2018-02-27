@@ -36,6 +36,7 @@
 // Alternatively you can create a Docker image.
 //
 //
+// LATER: return multiple popular destinations if they're equal
 
 "use strict";
 
