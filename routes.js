@@ -64,10 +64,24 @@ router.get("/conversions", (req, res) => {
   res.json(stats.requestsNumber);
 });
 
-// TO DO: PUT
-router.put("/amount", (req, res) => {
-  console.log(">>> Updating TOTAL AMOUNT.");
-
+// PUT
+router.put("/conversions", (req, res) => {
+  console.log(">>> Updating TOTAL AMOUNT +1.");
+  console.log("BEFORE: ", stats["requestsNumber"]);
+  stats["requestsNumber"] += 1;
+  const data = JSON.stringify(stats, null, 2);
+  let reply;
+  fs.writeFile("stats.json", data, err => {
+    if (err) {
+      throw err;
+    } else {
+      reply = {
+        msg: "The number of requests has been increased by 1.",
+        requestsNumber: stats["requestsNumber"]
+      }
+      res.send(reply);
+    }
+  });
 });
 
 
