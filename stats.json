@@ -1,5 +1,18 @@
 {
-  "mostPopular": [],
+  "mostPopular": [
+    {
+      "currency": "czk",
+      "conversions": 2
+    },
+    {
+      "currency": "usd",
+      "conversions": 3
+    },
+    {
+      "currency": "gbp",
+      "conversions": 1
+    }
+  ],
   "amountConverted": 47,
   "requestsNumber": 4
 }

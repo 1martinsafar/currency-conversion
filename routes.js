@@ -21,18 +21,43 @@ router.get("/popular", (req, res) => {
   }
 });
 
-
-
-// TO DO: POST
-
-
-// TO DO: PUT
-
-
-
-
-
-
+// POST
+router.post("/popular/:name", (req, res) => {
+  const name = req.params.name;
+  const destinations = stats["mostPopular"];
+  let present = false;
+  for (let i = 0; i < destinations.length; i++) {
+    console.log("UPDATING:", name);
+    console.log("CHECKING:", destinations[i].currency);
+    console.log("EQUALS:", destinations[i].currency === name);
+    if (destinations[i].currency === name) {
+      destinations[i].conversions += 1;
+      present = true;
+      break;
+    }
+  }
+  if (!present) {
+    const newDestination = {
+      "currency": name,
+      "conversions": 1
+    };
+    destinations.push(newDestination);
+  }
+  let reply;
+  const data = JSON.stringify(stats, null, 2);
+  fs.writeFile("stats.json", data, err => {
+    if (err) {
+      throw err;
+    } else {
+      reply = {
+        msg: "Popular destinations updated",
+        destinations: stats.mostPopular
+      };
+    }
+  });
+  console.log(">>> DONE updating the MOST POPULAR DESTINATIONS");
+  res.json(reply);
+});
 
 // 2. Total amount converted (in USD)
 // GET
@@ -82,8 +107,8 @@ router.put("/conversions", (req, res) => {
   console.log(">>> Updating TOTAL AMOUNT +1.");
   console.log("BEFORE: ", stats["requestsNumber"]);
   stats["requestsNumber"] += 1;
-  const data = JSON.stringify(stats, null, 2);
   let reply;
+  const data = JSON.stringify(stats, null, 2);
   fs.writeFile("stats.json", data, err => {
     if (err) {
       throw err;
