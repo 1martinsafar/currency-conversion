@@ -13,19 +13,33 @@ console.log(stats);
 // GET the Most popular destination currency
 router.get("/popular", (req, res) => {
   console.log(">>> Getting MOST POPULAR.");
-  res.json(stats.mostPopular);
+  let reply;
+  if (stats.mostPopular.length > 0) {
+    res.json(stats.mostPopular[0]);
+  } else {
+    res.json(stats.mostPopular);
+  }
 });
 
+
+
 // TO DO: POST
+
+
 // TO DO: PUT
 
-// 2.
-// GET the 2. Total amount converted (in USD)
+
+
+
+
+
+
+// 2. Total amount converted (in USD)
+// GET
 router.get("/amount", (req, res) => {
   console.log(">>> Getting TOTAL AMOUNT.");
   res.json(stats.amountConverted);
 });
-
 // PUT
 router.put("/amount/:number", (req, res) => {
   console.log(">>> Updating TOTAL AMOUNT.");
@@ -57,13 +71,12 @@ router.put("/amount/:number", (req, res) => {
   }
 });
 
-// 3.
-// GET the 3. Total number of conversion requests made
+// 3. Total number of conversion requests made
+// GET
 router.get("/conversions", (req, res) => {
   console.log(">>> Getting NUMBER OF CONVERSIONS.");
   res.json(stats.requestsNumber);
 });
-
 // PUT
 router.put("/conversions", (req, res) => {
   console.log(">>> Updating TOTAL AMOUNT +1.");
@@ -83,7 +96,6 @@ router.put("/conversions", (req, res) => {
     }
   });
 });
-
 
 module.exports = router;
 
