@@ -9,6 +9,11 @@ const data = fs.readFileSync("stats.json");
 const stats = JSON.parse(data);
 console.log(stats);
 
+const jsonParser = require("body-parser").json;
+// parsing the req body as JSON
+// making it accessible from the req.body property
+router.use(jsonParser());
+
 // 1.
 // GET the Most popular destination currency
 router.get("/popular", (req, res) => {
@@ -49,19 +54,19 @@ router.post("/popular/:name", (req, res) => {
     };
     destinations.push(newDestination);
   }
-  let reply;
   const data = JSON.stringify(stats, null, 2);
   fs.writeFile("stats.json", data, err => {
     if (err) {
       throw err;
     } else {
-      reply = {
-        msg: "Popular destinations updated",
-        destinations: stats.mostPopular
-      };
+      console.log(">>> DONE updating the MOST POPULAR DESTINATIONS");
     }
   });
-  console.log(">>> DONE updating the MOST POPULAR DESTINATIONS");
+  let reply = {
+    msg: "Popular destinations updated",
+    destinations: stats.mostPopular
+  };
+  console.log(">>> reply\n", reply);
   res.json(reply);
 });
 

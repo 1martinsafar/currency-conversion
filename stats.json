@@ -11,6 +11,10 @@
     {
       "currency": "gbp",
       "conversions": 4
+    },
+    {
+      "currency": "aud",
+      "conversions": 9
     }
   ],
   "amountConverted": 47,
