@@ -92,7 +92,8 @@ router.put("/amount/:number", (req, res) => {
         throw err;
       } else {
         reply = {
-          amountAdded: amount
+          amountAdded: amount,
+          total: stats["amountConverted"]
         }
         console.log("The AMOUNT has been updated.");
         console.log("AFTER: ", stats["amountConverted"]);
