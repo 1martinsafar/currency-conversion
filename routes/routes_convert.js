@@ -4,6 +4,8 @@
 const express = require("express");
 const router = express.Router();
 
+const axios = require("axios");
+
 /*
 SAMPLE EXTERNAL API RESPONSE
 
@@ -16,8 +18,39 @@ rates: { GBP: 0.71864 }
 */
 
 // Using EXTERNAL API for the Conversion Rates
-// GET
-router.get("/")
+const test = (from, to) => {
+  let final = axios.get(`http://api.fixer.io/latest?base=${from}&symbols=${to}`)
+  .then( response => {
+    return response.data;;
+  })
+  .catch( err => {
+    console.log(err);
+  });
+  console.log("__INSIDE FINAL:",final);
+  return final;
+};
+
+// GET the final conversion rate
+// maybe respond with only the rate later
+router.get("/:from/:to", (req, res) => {
+  const from = req.params.from.toUpperCase();
+  const to = req.params.to.toUpperCase();
+  test(from, to)
+  .then( response => {
+    console.log("__FINAL:", response);
+    let reply = {
+      "msg": "Conversion completed!",
+      "from": from,
+      "to": to,
+      "results": response,
+      "rate": response.rates[to]
+    };
+    res.send(reply);
+  })
+  .catch( err => {
+    console.log(err);
+  });;
+});
 
 module.exports = router;
 
