@@ -1,4 +1,4 @@
-// a module to handle the routes for stats
+// a module to handle the routes for displaying stats
 "use strict";
 
 const express = require("express");
@@ -25,12 +25,6 @@ router.get("/popular", (req, res) => {
     }
   }
   res.send(destinations[index]["currency"]);
-  // let reply;
-  // if (stats.mostPopular.length > 0) {
-  //   res.json(stats.mostPopular[0]);
-  // } else {
-  //   res.json(stats.mostPopular);
-  // }
 });
 
 // POST

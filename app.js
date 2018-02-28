@@ -1,18 +1,17 @@
-// set up CORS later
 //
 //
 // In the backend, use an external API
 // to get the currency rates.
 //
 //
-// The frontend has to communicate
-// only with your custom API.
-//
-//
 // Currency rates APIs:
 // => https://openexchangerates.org
 // => https://currencylayer.com
 // => http://fixer.io
+//
+//
+// The frontend has to communicate
+// only with your custom API.
 //
 //
 // The app should also display the following stats:
@@ -36,7 +35,10 @@
 // Alternatively you can create a Docker image.
 //
 //
-// LATER: return multiple popular destinations if they're equal
+// set up CORS later
+//
+//
+// LATER: maybe return multiple popular destinations if they're equal?
 
 "use strict";
 
@@ -47,7 +49,8 @@ const jsonParser = require("body-parser").json;
 const fs = require("fs");
 const logger = require("morgan");
 
-const routes = require("./routes");
+const routes_stats = require("./routes/routes_stats");
+const routes_convert = require("./routes/routes_convert");
 const data = fs.readFileSync("stats.json");
 const stats = JSON.parse(data);
 
@@ -58,7 +61,9 @@ app.use(jsonParser());
 app.use(logger("dev"));
 
 // the routes module will try to apply one of the handlers
-app.use("/stats", routes);
+app.use("/stats", routes_stats);
+// the routes module will try to apply one of the handlers
+app.use("/convert", routes_convert);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
