@@ -60,6 +60,17 @@ app.use(jsonParser());
 
 app.use(logger("dev"));
 
+// Allowing Cross-Origin Resource Sharing
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "GET, PUT, POST");
+    return res.status(200).json({});
+  }
+  next();
+});
+
 // the routes module will try to apply one of the handlers
 app.use("/stats", routes_stats);
 // the routes module will try to apply one of the handlers
