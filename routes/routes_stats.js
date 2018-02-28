@@ -9,13 +9,8 @@ const data = fs.readFileSync("stats.json");
 const stats = JSON.parse(data);
 console.log(stats);
 
-const jsonParser = require("body-parser").json;
-// parsing the req body as JSON
-// making it accessible from the req.body property
-router.use(jsonParser());
-
 // 1.
-// GET the Most popular destination currency
+// GET - get the Most popular destination currency
 router.get("/popular", (req, res) => {
   console.log(">>> Getting MOST POPULAR DESTINATION.");
   const destinations = stats.mostPopular;
@@ -32,7 +27,7 @@ router.get("/popular", (req, res) => {
   res.send(destinations[index]["currency"]);
 });
 
-// POST
+// POST - update the list of popular destinations
 router.post("/popular/:name", (req, res) => {
   const name = req.params.name;
   const destinations = stats["mostPopular"];
@@ -70,13 +65,13 @@ router.post("/popular/:name", (req, res) => {
   res.json(reply);
 });
 
-// 2. Total amount converted (in USD)
-// GET
+// 2.
+// GET - get the total amount converted (in USD)
 router.get("/amount", (req, res) => {
   console.log(">>> Getting TOTAL AMOUNT.");
   res.json(stats.amountConverted);
 });
-// PUT
+// PUT - update the total amount converted by the searched value
 router.put("/amount/:number", (req, res) => {
   console.log(">>> Updating TOTAL AMOUNT.");
   console.log("BEFORE: ", stats["amountConverted"]);
@@ -107,13 +102,13 @@ router.put("/amount/:number", (req, res) => {
   }
 });
 
-// 3. Total number of conversion requests made
-// GET
+// 3.
+// GET - get the total number of conversion requests made
 router.get("/conversions", (req, res) => {
   console.log(">>> Getting NUMBER OF CONVERSIONS.");
   res.json(stats.requestsNumber);
 });
-// PUT
+// PUT - update the number of conversion requests for the searched currency
 router.put("/conversions", (req, res) => {
   console.log(">>> Updating TOTAL AMOUNT +1.");
   console.log("BEFORE: ", stats["requestsNumber"]);
