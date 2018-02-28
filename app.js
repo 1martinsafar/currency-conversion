@@ -53,6 +53,7 @@
 // > Make sure you deal with possible errors etc.
 //
 // > Lastly, maybe setting up Gulp for minification etc.?
+// > Icon for the tab maybe
 
 "use strict";
 
