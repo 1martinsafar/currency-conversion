@@ -35,10 +35,24 @@
 // Alternatively you can create a Docker image.
 //
 //
-// set up CORS later
+// set up CORS
 //
 //
 // LATER: maybe return multiple popular destinations if they're equal?
+//
+//
+// > When building the API, consider it public. Other developers
+// > might use it so make sure it's understandable, validate
+// > inputs, etc.
+//
+//
+// > Expect the app will be later developed further by someone
+// > else. Write your code with that in mind
+//
+//
+// > Make sure you deal with possible errors etc.
+//
+// > Lastly, maybe setting up Gulp for minification etc.?
 
 "use strict";
 
