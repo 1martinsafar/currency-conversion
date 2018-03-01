@@ -9,6 +9,8 @@ const data = fs.readFileSync("stats.json");
 const stats = JSON.parse(data);
 console.log(stats);
 
+const axios = require("axios");
+
 // 1.
 // GET - get the Most popular destination currency
 router.get("/popular", (req, res) => {
@@ -127,6 +129,35 @@ router.put("/conversions", (req, res) => {
       res.send(reply);
     }
   });
+});
+
+// CURRENCY OPTIONS
+const getCurrencies = () => {
+  const results = axios.get(`http://api.fixer.io/latest`)
+  .then( response => {
+    return response.data;
+  })
+  .catch( err => {
+    console.log(err);
+  })
+  return results;
+};
+
+// GET - get a list of names of all the available currencies
+router.get("/currencies", (req, res) => {
+  console.log(">>> Getting all the currency names");
+  getCurrencies()
+  .then( response => {
+    const currencies = Object.keys(response.rates);
+    const reply = {
+      "msg": "Available currencies",
+      "currencies": currencies
+    };
+    res.send(reply);
+  })
+  .catch( err => {
+    console.log(err);
+  })
 });
 
 module.exports = router;

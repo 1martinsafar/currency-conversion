@@ -19,16 +19,16 @@ rates: { GBP: 0.71864 }
 
 // Using EXTERNAL API for the Conversion Rates
 // returns a promise with the conversion results
-const test = (from, to) => {
-  let final = axios.get(`http://api.fixer.io/latest?base=${from}&symbols=${to}`)
+const getRate = (from, to) => {
+  let results = axios.get(`http://api.fixer.io/latest?base=${from}&symbols=${to}`)
   .then( response => {
-    return response.data;;
+    return response.data;
   })
   .catch( err => {
     console.log(err);
   });
-  console.log("__INSIDE FINAL:",final);
-  return final;
+  console.log("__INSIDE results:",results);
+  return results;
 };
 
 // GET - get the final conversion rate for the searched currency
@@ -36,10 +36,10 @@ const test = (from, to) => {
 router.get("/:from/:to", (req, res) => {
   const from = req.params.from.toUpperCase();
   const to = req.params.to.toUpperCase();
-  test(from, to)
+  getRate(from, to)
   .then( response => {
-    console.log("__FINAL:", response);
-    let reply = {
+    console.log("__results:", response);
+    const reply = {
       "msg": "Conversion completed!",
       "from": from,
       "to": to,
@@ -50,7 +50,7 @@ router.get("/:from/:to", (req, res) => {
   })
   .catch( err => {
     console.log(err);
-  });;
+  });
 });
 
 module.exports = router;
