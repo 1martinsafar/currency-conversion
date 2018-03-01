@@ -49,7 +49,7 @@ class App extends Component {
     axios.get(`http://localhost:3000/stats/amount`)
       .then(res => {
         console.log("FETCHING TOTAL AMOUNT");
-        const totalAmount = res.data;
+        const totalAmount = Math.round(res.data);
         this.setState({
           totalAmount
         });
@@ -179,7 +179,7 @@ class App extends Component {
           </p>
 
           <div className="row">
-            <span className="result">Result: {this.state.result}</span>
+            <span className="result">Result: {Math.round(this.state.result)}</span>
           </div>
 
         </div>
