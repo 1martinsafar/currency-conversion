@@ -27,7 +27,6 @@ const getRate = (from, to) => {
   .catch( err => {
     console.log(err);
   });
-  console.log("__INSIDE results:",results);
   return results;
 };
 
@@ -39,12 +38,13 @@ router.get("/:from/:to", (req, res) => {
   getRate(from, to)
   .then( response => {
     console.log("__results:", response);
+    const rate = response.rates[to];
     const reply = {
       "msg": "Conversion completed!",
       "from": from,
       "to": to,
       "results": response,
-      "rate": response.rates[to]
+      "rate": rate
     };
     res.send(reply);
   })
