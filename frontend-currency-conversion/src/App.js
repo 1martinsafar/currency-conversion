@@ -11,12 +11,16 @@ class App extends Component {
     to: "",
     result: 0,
     rate: 1,
-    currencies: []
+    currencies: [],
+    mostPopular: null,
+    totalAmount: null,
+    conversions: null
   }
 
   // Using custom API to get a list of available currencies
   // and settings the default from/to values
   componentWillMount() {
+    // GET list of currencies
     axios.get(`http://localhost:3000/stats/currencies`)
       .then(res => {
         const currencies = res.data.currencies;
@@ -25,11 +29,50 @@ class App extends Component {
           to: currencies[0],
           currencies: currencies
         });
-        console.log("FINISHED: component WILL MOUNT");
       })
       .catch(error => {
         console.log('Error fetching and parsing data', error);
       });
+    // GET the most popular currency destination
+    axios.get(`http://localhost:3000/stats/popular`)
+      .then(res => {
+        console.log("FETCHING MOST POPULAR");
+        const mostPopular = res.data;
+        this.setState({
+          mostPopular
+        });
+      })
+      .catch(error => {
+        console.log('Error fetching and parsing data', error);
+      });
+    // GET the total amount converted (in USD)
+    axios.get(`http://localhost:3000/stats/amount`)
+      .then(res => {
+        console.log("FETCHING TOTAL AMOUNT");
+        const totalAmount = res.data;
+        this.setState({
+          totalAmount
+        });
+      })
+      .catch(error => {
+        console.log('Error fetching and parsing data', error);
+      });
+      // GET the total number of conversion requests made
+      axios.get(`http://localhost:3000/stats/conversions`)
+        .then(res => {
+          console.log("FETCHING TOTAL AMOUNT");
+          const conversions = res.data;
+          this.setState({
+            conversions
+          });
+        })
+        .catch(error => {
+          console.log('Error fetching and parsing data', error);
+        });
+
+
+
+    console.log("FINISHED: component WILL MOUNT");
   }
 
   // Creating the list of available currency options
@@ -106,9 +149,9 @@ class App extends Component {
         <div className="container content">
 
           <h1>Currency Conversion App</h1>
-          <h2>Most popular destination currency: </h2>
-          <h2>Total amount converted (in USD): </h2>
-          <h2>Total number of conversion requests made: </h2>
+          <h2>Most popular destination currency: {this.state.mostPopular}</h2>
+          <h2>Total amount converted (in USD): ${this.state.totalAmount}</h2>
+          <h2>Total number of conversion requests made: {this.state.conversions}</h2>
 
           <div className="row">
             <div className="col-2">From:</div>
