@@ -276,7 +276,7 @@ class App extends Component {
 
           <div className="row">
             <button name="convert" onClick={this.convert}>Convert</button>
-            <span className="result">Result: {Math.round(this.state.result)}</span>
+            <span className="result">Result: {this.state.result > 0 ? this.state.result.toFixed(2) : null}</span>
           </div>
 
         </div>
