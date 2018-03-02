@@ -131,13 +131,51 @@ class App extends Component {
   }
 
   // Updating the amount the user entered
-  updateAmount = e => {
+  updateAmount_WITH_CALLBACK = e => {
     console.log(">>> STARTING: updateAmount");
     const amount = Number(e.target.value);
     // Calculate the result whenever the `AMOUNT` to convert changes
     this.setState({
       amount
     }, this.getRate);
+  }
+
+  // Updating the amount the user entered
+  updateAmount = e => {
+    console.log(">>> STARTING: updateAmount");
+    const amount = Number(e.target.value);
+    // Calculate the result whenever the `AMOUNT` to convert changes
+    this.setState({
+      amount
+    });
+  }
+
+  saveRequest = () => {
+    console.log(">>> SAVING: Request");
+    // PUT to stats/conversions
+    axios.put(`http://localhost:3000/stats/conversions`)
+    .then(res => {
+      console.log("SAVED REQUEST");
+      console.log(res.data);
+    })
+  }
+  saveAmount = () => {
+    console.log(">>> SAVING: Amount in USD");
+    const amount = this.state.amount;
+    const amountUSD = 0;
+    // PUT to stats/amount/:amount
+  }
+  saveDestination = () => {
+    console.log(">>> SAVING: Destination");
+    const destination = this.state.to;
+    // PUT to stats/popular/:destination
+  }
+
+  convert = () => {
+    console.log(">>> CONVERTING");
+    this.saveRequest();
+    this.saveAmount();
+    this.saveDestination();
   }
 
   render() {
@@ -179,6 +217,7 @@ class App extends Component {
           </p>
 
           <div className="row">
+            <button name="convert" onClick={this.convert}>Convert</button>
             <span className="result">Result: {Math.round(this.state.result)}</span>
           </div>
 
