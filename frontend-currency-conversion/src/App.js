@@ -29,7 +29,7 @@ class App extends Component {
           from: currencies[0],
           to: currencies[0],
           currencies: currencies
-        });
+        }, this.getRateUSD);
       })
       .catch(error => {
         console.log('Error fetching and parsing data', error);
@@ -111,21 +111,15 @@ class App extends Component {
 
   // Calculating the result of the current conversion
   getRate = () => {
+    console.log(">>> STARTING: getRate");
     const from = this.state.from;
     const to = this.state.to;
     axios.get(`http://localhost:3000/convert/${from}/${to}`)
     .then(res => {
       const rate = res.data.rate;
-      const amount = this.state.amount;
-
-      if (rate) {
-        let result = amount * rate;
-        console.log("RESULT:", result);
-        this.setState({
-          rate,
-          result
-        });
-      }
+      this.setState({
+        rate
+      });
     })
     .catch(error => {
       console.log('Error fetching and parsing data', error);
@@ -229,9 +223,17 @@ class App extends Component {
     console.log(">>> CONVERTING");
     // DONE
     // this.saveDestination();
-    this.saveAmount();
+    // DONE
+    // this.saveAmount();
     // DONE
     // this.saveRequest();
+    const rate = this.state.rate;
+    const amount = this.state.amount;
+    const result = amount * rate;
+    console.log("RESULT:", result);
+    this.setState({
+      result
+    });
   }
 
   render() {
