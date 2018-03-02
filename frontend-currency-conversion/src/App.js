@@ -95,7 +95,7 @@ class App extends Component {
     console.log(">>> STARTING: handleFromChange");
     const selected = e.target.options[e.target.selectedIndex].text;
     // Calculate the result whenever the `FROM` currency changes
-    this.setState({ from: selected }, this.getRate);
+    this.setState({ from: selected }, this.getRates);
   }
 
   // Retrieving user's TO currency
@@ -103,20 +103,11 @@ class App extends Component {
     console.log(">>> STARTING: handleToChange");
     const selected = e.target.options[e.target.selectedIndex].text;
     // Calculate the result whenever the `TO` currency changes
-    this.setState({ to: selected }, this.getRates);
+    this.setState({ to: selected }, this.getRate);
 
     // GET the appropriate USD rate for the Destination currency
     // this.getRateUSD();
   }
-
-
-  // TESTING -> a callback calling 2 functions
-  getRates = () => {
-    this.getRate();
-    this.getRateUSD();
-  }
-
-
 
   // Calculating the result of the current conversion
   getRate = () => {
@@ -141,6 +132,31 @@ class App extends Component {
     });
   }
 
+  // TESTING -> a callback calling 2 functions
+  getRates = () => {
+    this.getRate();
+    this.getRateUSD();
+  }
+
+  // Get the USD rate based on the destination currency
+  getRateUSD = () => {
+    const currency = this.state.from;
+    console.log(">>> Getting USD Rate for:", currency);
+    console.log(`http://localhost:3000/convert/${currency}/USD`);
+    axios.get(`http://localhost:3000/convert/${currency}/USD`)
+      .then(res => {
+        console.log("FETCHING USD RATE");
+        const rateUSD = res.data.rate;
+        console.log("rateUSD:", rateUSD);
+        this.setState({
+          rateUSD
+        });
+      })
+      .catch(error => {
+        console.log('Error fetching and parsing data', error);
+      });
+  }
+
   // Updating the amount the user entered
   updateAmount_WITH_CALLBACK = e => {
     console.log(">>> STARTING: updateAmount");
@@ -161,6 +177,7 @@ class App extends Component {
     });
   }
 
+  // Update the popularity of currency destinations
   saveDestination = () => {
     console.log(">>> SAVING: Destination");
     const destination = this.state.to;
@@ -175,12 +192,25 @@ class App extends Component {
       console.log('Error updating data', error);
     });
   }
+
+  // Save the converted amount in USD
   saveAmount = () => {
     console.log(">>> SAVING: Amount in USD");
     const amount = this.state.amount;
-    const amountUSD = 0;
-    // PUT to stats/amount/:amount
+    const rateUSD = this.state.rateUSD;
+    const amountUSD = amount * rateUSD;
+    console.log("amountUSD:", amountUSD);
+    // PUT to the amountConverted
+    axios.put(`http://localhost:3000/stats/amount/${amountUSD}`)
+    .then(res => {
+      console.log("SAVED converted amount in USD");
+      console.log(res.data);
+    })
+    .catch(error => {
+      console.log('Error updating data', error);
+    });
   }
+
   // Increase the number of total conversion requests made on the web page by 1
   saveRequest = () => {
     console.log(">>> SAVING: Request");
@@ -193,24 +223,6 @@ class App extends Component {
     .catch(error => {
       console.log('Error updating data', error);
     });
-  }
-
-  getRateUSD = () => {
-    const currency = this.state.to;
-    console.log(">>> Getting USD Rate for:", currency);
-    console.log(`http://localhost:3000/convert/USD/${currency}`);
-    axios.get(`http://localhost:3000/convert/USD/${currency}`)
-      .then(res => {
-        console.log("FETCHING USD RATE");
-        const rateUSD = res.data.rate;
-        console.log("rateUSD:", rateUSD);
-        this.setState({
-          rateUSD
-        });
-      })
-      .catch(error => {
-        console.log('Error fetching and parsing data', error);
-      });
   }
 
   convert = () => {
