@@ -31,7 +31,7 @@ router.get("/popular", (req, res) => {
 
 // POST - update the list of popular destinations
 router.post("/popular/:name", (req, res) => {
-  const name = req.params.name;
+  const name = req.params.name.toLowerCase();
   const destinations = stats["mostPopular"];
   let present = false;
   for (let i = 0; i < destinations.length; i++) {

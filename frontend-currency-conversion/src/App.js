@@ -150,6 +150,27 @@ class App extends Component {
     });
   }
 
+  saveDestination = () => {
+    console.log(">>> SAVING: Destination");
+    const destination = this.state.to;
+    console.log("Destination:", destination);
+    // PUT to stats/popular/:destination
+    axios.post(`http://localhost:3000/stats/popular/${destination}`)
+    .then(res => {
+      console.log("SAVED DESTINATION");
+      console.log(res.data);
+    })
+    .catch(error => {
+      console.log('Error updating data', error);
+    });
+  }
+  saveAmount = () => {
+    console.log(">>> SAVING: Amount in USD");
+    const amount = this.state.amount;
+    const amountUSD = 0;
+    // PUT to stats/amount/:amount
+  }
+  // Increase the number of total conversion requests made on the web page by 1
   saveRequest = () => {
     console.log(">>> SAVING: Request");
     // PUT to stats/conversions
@@ -158,24 +179,18 @@ class App extends Component {
       console.log("SAVED REQUEST");
       console.log(res.data);
     })
+    .catch(error => {
+      console.log('Error updating data', error);
+    });
   }
-  saveAmount = () => {
-    console.log(">>> SAVING: Amount in USD");
-    const amount = this.state.amount;
-    const amountUSD = 0;
-    // PUT to stats/amount/:amount
-  }
-  saveDestination = () => {
-    console.log(">>> SAVING: Destination");
-    const destination = this.state.to;
-    // PUT to stats/popular/:destination
-  }
+
 
   convert = () => {
     console.log(">>> CONVERTING");
-    this.saveRequest();
-    this.saveAmount();
     this.saveDestination();
+    this.saveAmount();
+    // DONE
+    this.saveRequest();
   }
 
   render() {
