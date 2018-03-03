@@ -259,19 +259,23 @@ class App extends Component {
             <span className="data">{this.state.conversions}</span>
           </div>
 
-          <div className="row">
-            <div className="col-2">From:</div>
-            <div className="col-4">
-              <select className="from" onChange={this.handleFromChange}>
-                {options}
-              </select>
+          <div className="options-container">
+            <div className="currency-container">
+              <div className="currency">From:</div>
+              <div className="options">
+                <select className="from" onChange={this.handleFromChange}>
+                  {options}
+                </select>
+              </div>
             </div>
 
-            <div className="col-2">To:</div>
-            <div className="col-4">
-              <select className="to" onChange={this.handleToChange}>
-                {options}
-              </select>
+            <div className="currency-container">
+              <div className="currency">To:</div>
+              <div className="options">
+                <select className="to" onChange={this.handleToChange}>
+                  {options}
+                </select>
+              </div>
             </div>
           </div>
 
