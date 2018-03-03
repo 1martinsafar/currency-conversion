@@ -279,17 +279,17 @@ class App extends Component {
             </div>
           </div>
 
-          <div className="amount">
-            amount:
+          <div className="amount-container">
+            <h2 className="amount">amount:</h2>
             <input type="text"
                    name="amount"
-                   placeholder="amount"
+                   className="input"
                    onChange={this.updateAmount}
                    required />
           </div>
 
-          <div className="row">
-            <button name="convert" onClick={this.convert}>Convert</button>
+          <div className="result-container">
+            <button name="convert" className="convert" onClick={this.convert}>Convert</button>
             <span className="result">Result: {this.state.result > 0 ? this.state.result.toFixed(2) : null}</span>
           </div>
 
