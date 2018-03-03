@@ -4,10 +4,14 @@
 }
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: pink;
+  /* background-color: pink; */
+  background-color: #212529;
+  color: white;
+  color: #19b5fe;
+  /* color: blue; */
 }
 #root {
-  background-color: lightgrey;
+  /* background-color: lightgrey; */
 }
 h1, h2 {
   text-align: center;
@@ -19,13 +23,15 @@ h2 {
   font-size: 1.75rem;
 }
 .title {
+  color: black;
+  background-color: lightgreen;
+
   align-self: stretch;
 
   font-weight: 900;
 
   padding: 0.6rem;
   margin-bottom: 0.75rem;
-  background-color: lightgreen;
 }
 .stats {
   display: flex;
@@ -36,9 +42,12 @@ h2 {
   margin-bottom: 0;
 }
 .data {
+  color: lightgreen;
+
   line-height: 1;
   font-size: 2rem;
   font-weight: bold;
+  text-transform: uppercase;
 
   margin: 0.4rem auto 0.75rem auto;
 }
@@ -61,7 +70,7 @@ h2 {
 
   width: 100%;
   height: 100%;
-  background-color: lightgrey;
+  /* background-color: lightgrey; */
 
   padding-left: 0;
   padding-right: 0;
@@ -78,7 +87,7 @@ h2 {
 .currency-container {
   display: flex;
   flex-direction: row;
-  background-color: purple;
+  /* background-color: purple; */
 }
 
 .currency {
@@ -101,7 +110,7 @@ h2 {
   flex-direction: row;
   justify-content: center;
 
-  background-color: lightblue;
+  /* background-color: lightblue; */
 }
 .amount {
   margin-right: 0.5rem;
@@ -141,6 +150,9 @@ h2 {
   font-weight: 500;
   padding-top: 0.5rem;
   padding-left: 0.5rem;
+}
+.result span {
+  color: lightgreen;
 }
 
 * {
@@ -204,11 +216,11 @@ h2 {
     font-size: 1.25rem;
     text-transform: uppercase;
 
-    border: 2px solid black;
+    /* border: 2px solid black;
 
 
     color: white;
-    background-color: #60daf0;
+    background-color: #60daf0; */
   }
 }
 
