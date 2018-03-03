@@ -244,10 +244,20 @@ class App extends Component {
 
         <div className="container content">
 
-          <h1>Currency Conversion App</h1>
-          <h2>Most popular destination currency: {this.state.mostPopular}</h2>
-          <h2>Total amount converted (in USD): ${this.state.totalAmount}</h2>
-          <h2>Total number of conversion requests made: {this.state.conversions}</h2>
+          <h1 className="title">Currency Conversion</h1>
+
+          <div className="stats-container">
+            <h2 className="stats">Popular destination:</h2>
+            <span className="data">{this.state.mostPopular}</span>
+          </div>
+          <div className="stats-container">
+            <h2 className="stats">Amount converted:</h2>
+            <span className="data">${this.state.totalAmount}</span>
+          </div>
+          <div className="stats-container">
+            <h2 className="stats">Total requests:</h2>
+            <span className="data">{this.state.conversions}</span>
+          </div>
 
           <div className="row">
             <div className="col-2">From:</div>
@@ -265,14 +275,14 @@ class App extends Component {
             </div>
           </div>
 
-          <p>
+          <div className="amount">
             amount:
             <input type="text"
                    name="amount"
                    placeholder="amount"
                    onChange={this.updateAmount}
                    required />
-          </p>
+          </div>
 
           <div className="row">
             <button name="convert" onClick={this.convert}>Convert</button>

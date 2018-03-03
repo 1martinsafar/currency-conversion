@@ -1,15 +1,114 @@
+/* MOBILE FIRST */
 * {
   box-sizing: border-box;
+}
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: pink;
+}
+#root {
+  background-color: lightgrey;
+}
+h1, h2 {
+  text-align: center;
+}
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.75rem;
+}
+.title {
+  align-self: center;
+
+  padding: 0.6rem;
+  margin-bottom: 0.75rem;
+  background-color: lightgreen;
+}
+.stats {
+  display: flex;
+  flex-direction: column;
+  /* align-self: flex-start; */
+
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 0;
+}
+.data:last-of-type {
+  /* margin-bottom: 2rem; */
+}
+.data {
+  line-height: 1;
+  font-size: 2rem;
+  font-weight: bold;
+
+  margin: 0.4rem auto 0.75rem auto;
+  /* margin-bottom: 1rem; */
+}
+
+.stats-container {
+  display: flex;
+  flex-direction: column;
 }
 
 .wrapper {
   width: 100%;
   height: 100%;
-  background-color: #a2eff6;
+  /* background-color: #a2eff6; */
+  margin: 0;
+  padding: 0;
 }
 
 .content {
+  display: flex;
+  flex-direction: column;
+
   width: 100%;
   height: 100%;
-  background-color: #bfbebe;
+  /* background-color: #bfbebe; */
+  background-color: grey;
 }
+
+.row {
+  background-color: purple;
+}
+
+.amount {
+  background-color: lightblue;
+}
+
+/* ======================================================================
+                        TABLET
+========================================================================= */
+@media (min-width: 769px) {
+
+}
+
+/* ======================================================================
+                        DESKTOP
+========================================================================= */
+@media (min-width: 992px) {
+  .title {
+    /* align-self: stretch; */
+    border-radius: 10px;
+    padding: 2rem 10rem;
+
+    margin-top: 2rem;
+  }
+  .data {
+    margin-left: 0.5rem;
+    margin-right: 0;
+  }
+  .stats-container {
+    flex-direction: row;
+  }
+}
+
+
+
+
+
+
+
+/*  */
