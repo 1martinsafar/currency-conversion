@@ -162,7 +162,9 @@ class App extends Component {
   // Updating the amount the user entered
   updateAmount = e => {
     console.log(">>> STARTING: updateAmount");
-    const amount = Number(e.target.value);
+    const value = e.target.value;
+    const re = / |,/gi;
+    const amount = Number(value.replace(re, ""));
     // Calculate the result whenever the `AMOUNT` to convert changes
     this.setState({
       amount
@@ -309,10 +311,10 @@ class App extends Component {
               </div>
             </div>
 
-            <button name="swap" className="button swap" onClick={this.swapCurrency}>swap</button>
+            <button name="swap" className="button swap round" onClick={this.swapCurrency}>swap</button>
 
             <div className="currency-container">
-              <div className="currency">TO:</div>
+              <div className="currency" id="currency-to">TO:</div>
               <div className="options">
 
                 <Select options={optionsTo} value={this.state.to} handleChange={this.handleToChange} />
@@ -325,13 +327,13 @@ class App extends Component {
             <h2 className="amount">amount:</h2>
             <input type="text"
                    name="amount"
-                   className="input"
+                   className="input round"
                    onChange={this.updateAmount}
                    required />
           </div>
 
           <div className="result-container">
-            <button name="convert" className="button convert" onClick={this.convert}>Convert</button>
+            <button name="convert" className="button convert round" onClick={this.convert}>Convert</button>
             <span className="result">
               Result: {showResult ? <span>{result}</span> : null} {showResult ? this.state.to : null}
             </span>
