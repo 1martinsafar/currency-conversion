@@ -275,6 +275,10 @@ class App extends Component {
     const optionsTo = this.createOptions("to");
     const showResult = this.state.result > 0 && this.state.showResult;
 
+    const num = this.state.result;
+    const re = /,/gi;
+    let result = num.toLocaleString(undefined, {maximumFractionDigits: 2}).replace(re, " ");
+
     return (
       <div className="container-fluid wrapper">
 
@@ -329,7 +333,7 @@ class App extends Component {
           <div className="result-container">
             <button name="convert" className="button convert" onClick={this.convert}>Convert</button>
             <span className="result">
-              Result: {showResult ? <span>{this.state.result.toFixed(2)}</span> : null} {showResult ? this.state.to : null}
+              Result: {showResult ? <span>{result}</span> : null} {showResult ? this.state.to : null}
             </span>
           </div>
 
