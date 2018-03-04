@@ -79,7 +79,8 @@ h2 {
 .options-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  /* justify-content: space-around; */
+  justify-content: center;
 
   margin-bottom: 1rem;
 }
@@ -87,7 +88,8 @@ h2 {
 .currency-container {
   display: flex;
   flex-direction: row;
-  /* background-color: purple; */
+  /* padding-right: 5rem; */
+  margin-top: 1rem;
 }
 
 .currency {
@@ -100,8 +102,7 @@ h2 {
   display: flex;
 }
 
-.from,
-.to {
+.select {
   border: none;
 }
 
@@ -137,12 +138,18 @@ h2 {
   padding-bottom: 2rem;
 }
 
-.convert {
+.button {
   border: none;
-  margin-left: 0.5rem;
-
-  background-color: white;
   border-radius: 5px;
+}
+
+.swap {
+  align-self: flex-end;
+}
+
+.convert {
+  margin-left: 0.5rem;
+  background-color: white;
 }
 
 .result {
@@ -159,9 +166,8 @@ h2 {
   cursor: default;
 }
 
-.from,
-.to,
-.convert {
+.select,
+.button {
   cursor: pointer;
 }
 
@@ -197,30 +203,37 @@ h2 {
     flex-direction: row;
   }
   .options-container {
+    /* margin-left: 2rem; */
     margin-top: 3rem;
+    margin-bottom: 3rem;
   }
   .amount-container {
-    margin-bottom: 1rem;
+    margin-bottom: 3rem;
   }
   .input {
     width: 10rem;
+  }
+  .result {
+    margin-top: 1rem;
   }
   .result-container {
     align-items: center;
     justify-content: center;
   }
+  .button {
+    font-size: 1.25rem;
+    text-transform: uppercase;
+  }
+  .swap {
+    width: 4.5rem;
+    height: 2rem;
+
+    margin-left: 8rem;
+    margin-right: 8rem;
+  }
   .convert {
     width: 8rem;
     height: 2.5rem;
-
-    font-size: 1.25rem;
-    text-transform: uppercase;
-
-    /* border: 2px solid black;
-
-
-    color: white;
-    background-color: #60daf0; */
   }
 }
 

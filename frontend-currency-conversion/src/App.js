@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
-import './styles.css';
+import React, { Component } from "react";
+import "./styles.css";
 
-import axios from 'axios';
+import axios from "axios";
+
+// Components
+import Select from "./Components/Select";
 
 class App extends Component {
 
@@ -16,7 +19,7 @@ class App extends Component {
     totalAmount: null,
     conversions: null,
     rateUSD: null,
-    showResult: false
+    showResult: false,
   }
 
   // Using custom API to get a list of available currencies
@@ -76,9 +79,9 @@ class App extends Component {
   }
 
   // Creating the list of available currency options
-  createOptions = () => {
+  createOptions = (type) => {
     const options = this.state.currencies.map((currency, i) =>
-      <option key={i} value={"option" + i}>
+      <option key={i} value={currency}>
         {currency}
       </option>);
     return options;
@@ -107,13 +110,11 @@ class App extends Component {
     console.log(">>> STARTING: handleToChange");
     const selected = e.target.options[e.target.selectedIndex].text;
     // Calculate the result whenever the `TO` currency changes
+    // And then GET the appropriate USD rate for the Destination currency
     this.setState({
       to: selected,
       showResult: false
     }, this.getRate);
-
-    // GET the appropriate USD rate for the Destination currency
-    // this.getRateUSD();
   }
 
   // Calculating the result of the current conversion
@@ -133,7 +134,7 @@ class App extends Component {
     });
   }
 
-  // TESTING -> a callback calling 2 functions
+  // Get the rate for the current conversion and the rate in USD
   getRates = () => {
     this.getRate();
     this.getRateUSD();
@@ -156,16 +157,6 @@ class App extends Component {
       .catch(error => {
         console.log('Error fetching and parsing data', error);
       });
-  }
-
-  // Updating the amount the user entered
-  updateAmount_WITH_CALLBACK = e => {
-    console.log(">>> STARTING: updateAmount");
-    const amount = Number(e.target.value);
-    // Calculate the result whenever the `AMOUNT` to convert changes
-    this.setState({
-      amount
-    }, this.getRate);
   }
 
   // Updating the amount the user entered
@@ -244,8 +235,44 @@ class App extends Component {
     });
   }
 
+  swapCurrency = () => {
+    const from = this.state.from;
+    const to = this.state.to;
+
+    const optionsFrom = document.querySelectorAll(".from option");
+    const optionsTo = document.querySelectorAll(".to option");
+
+    console.log("FROM:", from);
+    console.log("TO:", to);
+
+    optionsFrom.forEach(optionFrom => {
+      if (optionFrom.textContent === to) {
+        console.log("SELECTING:\n", optionFrom);
+        optionFrom.setAttribute("selected", true);
+      } else {
+        optionFrom.removeAttribute("selected");
+      }
+    });
+
+    optionsTo.forEach(optionTo => {
+      if (optionTo.textContent === from) {
+        console.log("SELECTING:\n", optionTo);
+        optionTo.setAttribute("selected", true);
+      } else {
+        optionTo.removeAttribute("selected");
+      }
+    });
+
+    this.setState({
+      from: to,
+      to: from,
+      showResult: false
+    }, this.getRates);
+  }
+
   render() {
-    const options = this.createOptions();
+    const optionsFrom = this.createOptions("from");
+    const optionsTo = this.createOptions("to");
     const showResult = this.state.result > 0 && this.state.showResult;
 
     return (
@@ -272,18 +299,20 @@ class App extends Component {
             <div className="currency-container">
               <div className="currency">FROM:</div>
               <div className="options">
-                <select className="from" onChange={this.handleFromChange}>
-                  {options}
-                </select>
+
+                <Select options={optionsFrom} value={this.state.from} handleChange={this.handleFromChange} />
+
               </div>
             </div>
+
+            <button name="swap" className="button swap" onClick={this.swapCurrency}>swap</button>
 
             <div className="currency-container">
               <div className="currency">TO:</div>
               <div className="options">
-                <select className="to" onChange={this.handleToChange}>
-                  {options}
-                </select>
+
+                <Select options={optionsTo} value={this.state.to} handleChange={this.handleToChange} />
+
               </div>
             </div>
           </div>
@@ -298,7 +327,7 @@ class App extends Component {
           </div>
 
           <div className="result-container">
-            <button name="convert" className="convert" onClick={this.convert}>Convert</button>
+            <button name="convert" className="button convert" onClick={this.convert}>Convert</button>
             <span className="result">
               Result: {showResult ? <span>{this.state.result.toFixed(2)}</span> : null} {showResult ? this.state.to : null}
             </span>
