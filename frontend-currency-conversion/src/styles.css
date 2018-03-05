@@ -37,8 +37,8 @@ h2 {
 .stats {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center; */
+  /* align-items: center; */
 
   margin-bottom: 0;
 }
@@ -56,6 +56,8 @@ h2 {
 .stats-container {
   display: flex;
   flex-direction: column;
+  /* Required for Internet Explorer */
+  text-align: center;
 }
 
 .wrapper {
