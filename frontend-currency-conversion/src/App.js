@@ -12,6 +12,7 @@ import Swap from "./Components/Swap";
 
 class App extends Component {
 
+  // Setting the default state
   state = {
     amount: 0,
     from: "",
@@ -29,9 +30,10 @@ class App extends Component {
   // Using custom API to get a list of available currencies
   // and settings the default from/to values
   componentWillMount() {
-    // GET list of currencies
+    // GET list of currencies, set the default currency and get its USD rate
     axios.get(`http://localhost:3000/stats/currencies`)
       .then(res => {
+        console.log("FETCHING currencies");
         const currencies = res.data.currencies;
         this.setState({
           from: currencies[0],
@@ -42,10 +44,11 @@ class App extends Component {
       .catch(error => {
         console.log('Error fetching and parsing data', error);
       });
+
     // GET the most popular currency destination
     axios.get(`http://localhost:3000/stats/popular`)
       .then(res => {
-        console.log("FETCHING MOST POPULAR");
+        console.log("FETCHING most popular");
         const mostPopular = res.data;
         this.setState({
           mostPopular
@@ -54,10 +57,11 @@ class App extends Component {
       .catch(error => {
         console.log('Error fetching and parsing data', error);
       });
+
     // GET the total amount converted (in USD)
     axios.get(`http://localhost:3000/stats/amount`)
       .then(res => {
-        console.log("FETCHING TOTAL AMOUNT");
+        console.log("FETCHING total amount");
         const totalAmount = Math.round(res.data);
         this.setState({
           totalAmount
@@ -66,10 +70,11 @@ class App extends Component {
       .catch(error => {
         console.log('Error fetching and parsing data', error);
       });
+
       // GET the total number of conversion requests made
       axios.get(`http://localhost:3000/stats/conversions`)
         .then(res => {
-          console.log("FETCHING TOTAL AMOUNT");
+          console.log("FETCHING total requests");
           const conversions = res.data;
           this.setState({
             conversions
@@ -79,11 +84,11 @@ class App extends Component {
           console.log('Error fetching and parsing data', error);
         });
 
-    console.log("FINISHED: component WILL MOUNT");
-  }
+    console.log("FINISHED: Component WILL MOUNT");
+  } // end of componentWillMount //
 
   // Creating the list of available currency options
-  createOptions = type => {
+  createOptions = () => {
     const options = this.state.currencies.map((currency, i) =>
       <option key={i} value={currency}>
         {currency}

@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-
 const Select = props => (
   <select className="select round" value={props.value} onChange={props.handleChange}>
     {props.options}

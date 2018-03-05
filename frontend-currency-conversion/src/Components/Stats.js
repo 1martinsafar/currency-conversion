@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-
 const Stats = props => (
   <div className="stats-container">
     <h2 className="stats">{props.title}:</h2>

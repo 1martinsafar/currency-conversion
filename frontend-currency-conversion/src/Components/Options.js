@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 // Components
 import Select from "./Select";
 
-
 const Options = props => (
     <div className="currency-container">
       <div className="currency" id={props.id}>{props.type}:</div>
