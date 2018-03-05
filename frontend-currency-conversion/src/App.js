@@ -4,9 +4,10 @@ import "./styles.css";
 import axios from "axios";
 
 // Components
-import Select from "./Components/Select";
 import Stats from "./Components/Stats";
 import Options from "./Components/Options";
+import Amount from "./Components/Amount";
+import Result from "./Components/Result";
 
 class App extends Component {
 
@@ -147,6 +148,16 @@ class App extends Component {
     const currency = this.state.from;
     console.log(">>> Getting USD Rate for:", currency);
     console.log(`http://localhost:3000/convert/${currency}/USD`);
+    // If the FROM currency is USD then the rate is 1 because
+    // the USD rate calculation is based on the FROM currency
+    if (currency === "USD") {
+      console.log("USD to USD = rate 1");
+      const rateUSD = 1;
+      this.setState({
+        rateUSD
+      });
+      return;
+    }
     axios.get(`http://localhost:3000/convert/${currency}/USD`)
       .then(res => {
         console.log("FETCHING USD RATE");
@@ -192,10 +203,17 @@ class App extends Component {
   // Save the converted amount in USD
   saveAmount = () => {
     console.log(">>> SAVING: Amount in USD");
-    const amount = this.state.amount;
+    const amount = Number(this.state.amount);
+    console.log("amount:", amount);
     const rateUSD = this.state.rateUSD;
+    console.log("rateUSD:", rateUSD);
     const amountUSD = amount * rateUSD;
     console.log("amountUSD:", amountUSD);
+    console.log("amountUSD:", amountUSD);
+    console.log("amountUSD:", amountUSD);
+    console.log("amountUSD:", amountUSD);
+    console.log("amountUSD:", amountUSD);
+    console.log(typeof amountUSD);
     // PUT to the amountConverted
     axios.put(`http://localhost:3000/stats/amount/${amountUSD}`)
     .then(res => {
@@ -282,6 +300,7 @@ class App extends Component {
     const num = this.state.result;
     const re = /,/gi;
     let result = num.toLocaleString(undefined, {maximumFractionDigits: 2}).replace(re, " ");
+    // result = Number(result);
 
     return (
       <div className="container-fluid wrapper">
@@ -300,21 +319,9 @@ class App extends Component {
             <Options id="currency-to" type="TO" options={optionsTo} value={this.state.to} handleChange={this.handleToChange} />
           </div>
 
-          <div className="amount-container">
-            <h2 className="amount">amount:</h2>
-            <input type="text"
-                   name="amount"
-                   className="input round"
-                   onChange={this.updateAmount}
-                   required />
-          </div>
+          <Amount updateAmount={this.updateAmount} />
 
-          <div className="result-container">
-            <button name="convert" className="button convert round" onClick={this.convert}>Convert</button>
-            <span className="result">
-              Result: {showResult ? <span>{result}</span> : null} {showResult ? this.state.to : null}
-            </span>
-          </div>
+          <Result convert={this.convert} showResult={showResult} result={result} currency={this.state.to} />
 
         </div>
 

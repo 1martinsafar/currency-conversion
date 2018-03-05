@@ -2,7 +2,7 @@
   "mostPopular": [
     {
       "currency": "czk",
-      "conversions": 5
+      "conversions": 14
     },
     {
       "currency": "usd",
@@ -14,13 +14,13 @@
     },
     {
       "currency": "aud",
-      "conversions": 10
+      "conversions": 11
     },
     {
       "currency": "cad",
       "conversions": 1
     }
   ],
-  "amountConverted": 48589.00417,
-  "requestsNumber": 10
+  "amountConverted": 206262.50417,
+  "requestsNumber": 19
 }
