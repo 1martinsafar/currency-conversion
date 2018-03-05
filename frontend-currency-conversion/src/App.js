@@ -242,14 +242,15 @@ class App extends Component {
 
   convert = () => {
     console.log(">>> CONVERTING");
-    // DONE
+    const amount = this.state.amount;
+    if (!amount || amount < 0) {
+      console.log("<<< INVALID INPUT! >>>");
+      return;
+    }
     this.saveDestination();
-    // DONE
     this.saveAmount();
-    // DONE
     this.saveRequest();
     const rate = this.state.rate;
-    const amount = this.state.amount;
     const result = amount * rate;
     console.log("RESULT:", result);
     this.setState({
@@ -296,11 +297,12 @@ class App extends Component {
   render() {
     const optionsFrom = this.createOptions("from");
     const optionsTo = this.createOptions("to");
+
     const showResult = this.state.result > 0 && this.state.showResult;
 
     const num = this.state.result;
     const re = /,/gi;
-    let result = num.toLocaleString(undefined, {maximumFractionDigits: 2}).replace(re, " ");
+    const result = num.toLocaleString(undefined, {maximumFractionDigits: 2}).replace(re, " ");
 
     return (
       <div className="container-fluid wrapper">
@@ -309,7 +311,7 @@ class App extends Component {
           <h1 className="title">Currency Conversion</h1>
 
           <Stats title="Popular destination" data={this.state.mostPopular} />
-          <Stats title="Amount converted" data={this.state.totalAmount} />
+          <Stats title="Amount converted" data={"$" + this.state.totalAmount} />
           <Stats title="Total requests" data={this.state.conversions} />
 
           <div className="options-container">
