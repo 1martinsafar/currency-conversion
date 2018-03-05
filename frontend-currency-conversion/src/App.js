@@ -245,6 +245,17 @@ class App extends Component {
     const amount = this.state.amount;
     if (!amount || amount < 0) {
       console.log("<<< INVALID INPUT! >>>");
+      this.setState({
+        result: 0,
+        showResult: true
+      });
+      return;
+    }
+    else if (this.state.from === this.state.to) {
+      this.setState({
+        result: this.state.amount,
+        showResult: true
+      });
       return;
     }
     this.saveDestination();
@@ -252,7 +263,6 @@ class App extends Component {
     this.saveRequest();
     const rate = this.state.rate;
     const result = amount * rate;
-    console.log("RESULT:", result);
     this.setState({
       result,
       showResult: true

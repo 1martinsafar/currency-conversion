@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-// Components
-
 const Amount = props => (
   <div className="amount-container">
     <h2 className="amount">amount:</h2>
