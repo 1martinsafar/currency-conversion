@@ -269,6 +269,17 @@ class App extends Component {
     });
   }
 
+  selectOption = (options, currency) => {
+    options.forEach(option => {
+      if (option.textContent === currency) {
+        option.setAttribute("selected", true);
+      } else {
+        option.removeAttribute("selected");
+      }
+    });
+  }
+
+  // Swaps the currencies by adding `selected` attribute to the appropriate dropdown
   swapCurrency = () => {
     const from = this.state.from;
     const to = this.state.to;
@@ -276,27 +287,10 @@ class App extends Component {
     const optionsFrom = document.querySelectorAll(".from option");
     const optionsTo = document.querySelectorAll(".to option");
 
-    console.log("FROM:", from);
-    console.log("TO:", to);
+    this.selectOption(optionsFrom, to);
+    this.selectOption(optionsTo, from);
 
-    optionsFrom.forEach(optionFrom => {
-      if (optionFrom.textContent === to) {
-        console.log("SELECTING:\n", optionFrom);
-        optionFrom.setAttribute("selected", true);
-      } else {
-        optionFrom.removeAttribute("selected");
-      }
-    });
-
-    optionsTo.forEach(optionTo => {
-      if (optionTo.textContent === from) {
-        console.log("SELECTING:\n", optionTo);
-        optionTo.setAttribute("selected", true);
-      } else {
-        optionTo.removeAttribute("selected");
-      }
-    });
-
+    // Updating the currencies and currency rates
     this.setState({
       from: to,
       to: from,
