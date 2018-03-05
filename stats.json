@@ -2,11 +2,11 @@
   "mostPopular": [
     {
       "currency": "czk",
-      "conversions": 33
+      "conversions": 35
     },
     {
       "currency": "usd",
-      "conversions": 13
+      "conversions": 15
     },
     {
       "currency": "gbp",
@@ -23,8 +23,16 @@
     {
       "currency": "dkk",
       "conversions": 4
+    },
+    {
+      "currency": "ron",
+      "conversions": 1
+    },
+    {
+      "currency": "rub",
+      "conversions": 2
     }
   ],
-  "amountConverted": 312325.5510900008,
-  "requestsNumber": 131
-}}
+  "amountConverted": 312386.30954000074,
+  "requestsNumber": 138
+}

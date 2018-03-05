@@ -83,7 +83,7 @@ class App extends Component {
   }
 
   // Creating the list of available currency options
-  createOptions = (type) => {
+  createOptions = type => {
     const options = this.state.currencies.map((currency, i) =>
       <option key={i} value={currency}>
         {currency}
@@ -91,39 +91,32 @@ class App extends Component {
     return options;
   }
 
-  // LATER: DRY -> use 1 function
-
-  // handleCurrencyChange = (type, e) => {
-  //   const selected = e.target.options[e.target.selectedIndex].text;
-  //   this.setState({ [type]: selected });
-  // }
+  // Retrieving user's specified currency
+  handleCurrencyChange = (type, callback, e) => {
+    const selected = e.target.options[e.target.selectedIndex].text;
+    this.setState({
+      [type]: selected,
+      showResult: false
+    }, callback);
+  }
 
   // Retrieving user's FROM currency
   handleFromChange = e => {
-    console.log(">>> STARTING: handleFromChange");
-    const selected = e.target.options[e.target.selectedIndex].text;
-    // Calculate the result whenever the `FROM` currency changes
-    this.setState({
-      from: selected,
-      showResult: false
-    }, this.getRates);
+    console.log(">>> Handling FROM change");
+    // Calculate the currency rate and USD rate whenever the `FROM` currency changes
+    this.handleCurrencyChange("from", this.getRates, e);
   }
 
   // Retrieving user's TO currency
   handleToChange = e => {
-    console.log(">>> STARTING: handleToChange");
-    const selected = e.target.options[e.target.selectedIndex].text;
-    // Calculate the result whenever the `TO` currency changes
-    // And then GET the appropriate USD rate for the Destination currency
-    this.setState({
-      to: selected,
-      showResult: false
-    }, this.getRate);
+    console.log(">>> Handling TO change");
+    // Calculate the currency rate whenever the `TO` currency changes
+    this.handleCurrencyChange("to", this.getRate, e);
   }
 
-  // Calculating the result of the current conversion
+  // Calculating the rate of the current conversion
   getRate = () => {
-    console.log(">>> STARTING: getRate");
+    console.log(">>> Getting rate");
     const from = this.state.from;
     const to = this.state.to;
     axios.get(`http://localhost:3000/convert/${from}/${to}`)
@@ -138,21 +131,13 @@ class App extends Component {
     });
   }
 
-  // Get the rate for the current conversion and the rate in USD
-  getRates = () => {
-    this.getRate();
-    this.getRateUSD();
-  }
-
   // Get the USD rate based on the destination currency
   getRateUSD = () => {
+    console.log(">>> Getting USD rate");
     const currency = this.state.from;
-    console.log(">>> Getting USD Rate for:", currency);
-    console.log(`http://localhost:3000/convert/${currency}/USD`);
     // If the FROM currency is USD then the rate is 1 because
     // the USD rate calculation is based on the FROM currency
     if (currency === "USD") {
-      console.log("USD to USD = rate 1");
       const rateUSD = 1;
       this.setState({
         rateUSD
@@ -173,13 +158,19 @@ class App extends Component {
       });
   }
 
-  // Updating the amount the user entered
+  // Get the rates for the current conversion and the USD rate
+  getRates = () => {
+    console.log(">>> Getting rates");
+    this.getRate();
+    this.getRateUSD();
+  }
+
+  // Updating the amount the user entered, spaces and commas allowed
   updateAmount = e => {
-    console.log(">>> STARTING: updateAmount");
+    console.log(">>> Updating amount");
     const value = e.target.value;
     const re = / |,/gi;
     const amount = Number(value.replace(re, ""));
-    // Calculate the result whenever the `AMOUNT` to convert changes
     this.setState({
       amount
     });
@@ -189,7 +180,6 @@ class App extends Component {
   saveDestination = () => {
     console.log(">>> SAVING: Destination");
     const destination = this.state.to;
-    console.log("Destination:", destination);
     // PUT to stats/popular/:destination
     axios.post(`http://localhost:3000/stats/popular/${destination}`)
     .then(res => {
@@ -205,17 +195,9 @@ class App extends Component {
   saveAmount = () => {
     console.log(">>> SAVING: Amount in USD");
     const amount = Number(this.state.amount);
-    console.log("amount:", amount);
     const rateUSD = this.state.rateUSD;
-    console.log("rateUSD:", rateUSD);
     const amountUSD = amount * rateUSD;
-    console.log("amountUSD:", amountUSD);
-    console.log("amountUSD:", amountUSD);
-    console.log("amountUSD:", amountUSD);
-    console.log("amountUSD:", amountUSD);
-    console.log("amountUSD:", amountUSD);
-    console.log(typeof amountUSD);
-    // PUT to the amountConverted
+    // PUT to the stats/amount/:number
     axios.put(`http://localhost:3000/stats/amount/${amountUSD}`)
     .then(res => {
       console.log("SAVED converted amount in USD");
@@ -240,11 +222,11 @@ class App extends Component {
     });
   }
 
+  // Perform the currency conversion and save the data to the database
   convert = () => {
-    console.log(">>> CONVERTING");
+    console.log(">>> Converting");
     const amount = this.state.amount;
     if (!amount || amount < 0) {
-      console.log("<<< INVALID INPUT! >>>");
       this.setState({
         result: 0,
         showResult: true
@@ -269,6 +251,7 @@ class App extends Component {
     });
   }
 
+  // Selects the specified currency in the list of options
   selectOption = (options, currency) => {
     options.forEach(option => {
       if (option.textContent === currency) {
@@ -281,15 +264,14 @@ class App extends Component {
 
   // Swaps the currencies by adding `selected` attribute to the appropriate dropdown
   swapCurrency = () => {
+    console.log(">>> Swapping currencies");
     const from = this.state.from;
     const to = this.state.to;
-
     const optionsFrom = document.querySelectorAll(".from option");
     const optionsTo = document.querySelectorAll(".to option");
 
     this.selectOption(optionsFrom, to);
     this.selectOption(optionsTo, from);
-
     // Updating the currencies and currency rates
     this.setState({
       from: to,
