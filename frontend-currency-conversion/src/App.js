@@ -8,6 +8,7 @@ import Stats from "./Components/Stats";
 import Options from "./Components/Options";
 import Amount from "./Components/Amount";
 import Result from "./Components/Result";
+import Swap from "./Components/Swap";
 
 class App extends Component {
 
@@ -300,11 +301,9 @@ class App extends Component {
     const num = this.state.result;
     const re = /,/gi;
     let result = num.toLocaleString(undefined, {maximumFractionDigits: 2}).replace(re, " ");
-    // result = Number(result);
 
     return (
       <div className="container-fluid wrapper">
-
         <div className="container content">
 
           <h1 className="title">Currency Conversion</h1>
@@ -315,7 +314,7 @@ class App extends Component {
 
           <div className="options-container">
             <Options type="FROM" options={optionsFrom} value={this.state.from} handleChange={this.handleFromChange} />
-            <button name="swap" className="button swap round" onClick={this.swapCurrency}>swap</button>
+            <Swap handleSwap={this.swapCurrency} />
             <Options id="currency-to" type="TO" options={optionsTo} value={this.state.to} handleChange={this.handleToChange} />
           </div>
 
@@ -324,7 +323,6 @@ class App extends Component {
           <Result convert={this.convert} showResult={showResult} result={result} currency={this.state.to} />
 
         </div>
-
       </div>
     );
   }
