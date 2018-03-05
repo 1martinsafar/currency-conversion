@@ -1,0 +1,18 @@
+{
+  "mostPopular": [
+    {
+      "currency": "czk",
+      "conversions": 2
+    },
+    {
+      "currency": "usd",
+      "conversions": 2
+    },
+    {
+      "currency": "gbp",
+      "conversions": 1
+    }
+  ],
+  "amountConverted": 50043.31715,
+  "requestsNumber": 5
+}
