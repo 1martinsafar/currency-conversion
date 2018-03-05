@@ -5,6 +5,8 @@ import axios from "axios";
 
 // Components
 import Select from "./Components/Select";
+import Stats from "./Components/Stats";
+import Options from "./Components/Options";
 
 class App extends Component {
 
@@ -15,9 +17,9 @@ class App extends Component {
     result: 0,
     rate: 1,
     currencies: [],
-    mostPopular: null,
-    totalAmount: null,
-    conversions: null,
+    mostPopular: "",
+    totalAmount: 0,
+    conversions: 0,
     rateUSD: null,
     showResult: false,
   }
@@ -222,11 +224,11 @@ class App extends Component {
   convert = () => {
     console.log(">>> CONVERTING");
     // DONE
-    // this.saveDestination();
+    this.saveDestination();
     // DONE
-    // this.saveAmount();
+    this.saveAmount();
     // DONE
-    // this.saveRequest();
+    this.saveRequest();
     const rate = this.state.rate;
     const amount = this.state.amount;
     const result = amount * rate;
@@ -288,39 +290,14 @@ class App extends Component {
 
           <h1 className="title">Currency Conversion</h1>
 
-          <div className="stats-container">
-            <h2 className="stats">Popular destination:</h2>
-            <span className="data">{this.state.mostPopular}</span>
-          </div>
-          <div className="stats-container">
-            <h2 className="stats">Amount converted:</h2>
-            <span className="data">${this.state.totalAmount}</span>
-          </div>
-          <div className="stats-container">
-            <h2 className="stats">Total requests:</h2>
-            <span className="data">{this.state.conversions}</span>
-          </div>
+          <Stats title="Popular destination" data={this.state.mostPopular} />
+          <Stats title="Amount converted" data={this.state.totalAmount} />
+          <Stats title="Total requests" data={this.state.conversions} />
 
           <div className="options-container">
-            <div className="currency-container">
-              <div className="currency">FROM:</div>
-              <div className="options">
-
-                <Select options={optionsFrom} value={this.state.from} handleChange={this.handleFromChange} />
-
-              </div>
-            </div>
-
+            <Options type="FROM" options={optionsFrom} value={this.state.from} handleChange={this.handleFromChange} />
             <button name="swap" className="button swap round" onClick={this.swapCurrency}>swap</button>
-
-            <div className="currency-container">
-              <div className="currency" id="currency-to">TO:</div>
-              <div className="options">
-
-                <Select options={optionsTo} value={this.state.to} handleChange={this.handleToChange} />
-
-              </div>
-            </div>
+            <Options id="currency-to" type="TO" options={optionsTo} value={this.state.to} handleChange={this.handleToChange} />
           </div>
 
           <div className="amount-container">
