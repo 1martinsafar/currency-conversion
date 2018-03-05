@@ -15,8 +15,12 @@
     {
       "currency": "aud",
       "conversions": 10
+    },
+    {
+      "currency": "cad",
+      "conversions": 1
     }
   ],
-  "amountConverted": 134.00417,
-  "requestsNumber": 9
+  "amountConverted": 48589.00417,
+  "requestsNumber": 10
 }
