@@ -62,7 +62,7 @@ router.post("/popular/:name", (req, res) => {
   const data = JSON.stringify(stats, null, 2);
   fs.writeFile("stats.json", data, err => {
     if (err) {
-      //throw "Error writing to the most popular currencies!";
+      throw "Error writing to the most popular currencies!";
     }
   });
   let reply = {
@@ -97,7 +97,7 @@ router.put("/amount/:number", (req, res) => {
   const data = JSON.stringify(stats, null, 2);
   fs.writeFile("stats.json", data, err => {
     if (err) {
-      //throw "Error writing to the amount converted!";
+      throw "Error writing to the amount converted!";
     } else {
       reply = {
         amountAdded: amount,
@@ -125,7 +125,7 @@ router.put("/conversions", (req, res) => {
   const data = JSON.stringify(stats, null, 2);
   fs.writeFile("stats.json", data, err => {
     if (err) {
-      //throw "Error writing to the requests number!";
+      throw "Error writing to the requests number!";
     } else {
       reply = {
         msg: "The number of requests has been increased by 1.",
@@ -145,7 +145,6 @@ const getCurrencies = () => {
   })
   .catch( err => {
     console.log(err);
-    //throw "Error accessing external API's currency options!";
   })
   return results;
 };
@@ -166,7 +165,6 @@ router.get("/currencies", (req, res) => {
   })
   .catch( err => {
     console.log(err);
-    //throw "Error accessing external API's currency options!";
   })
 });
 
