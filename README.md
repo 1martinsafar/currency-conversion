@@ -1,7 +1,7 @@
 # currency-conversion
 # Use `node app.js` to start the API server, port: 3000 by default (inside backend-api-currency-conversion)
 # Use `npm start` to run the React using the create-react-app, if asked about port, type `y` (inside frontend-currency-conversion)
-# Use `npm install` to install the required project dependencies before running the apps
+# Use `npm install` in each app's root folder to install the required project dependencies before running the apps
 # The Frontend app is responsive/mobile-friendly and should work fine in Google Chrome, Mozilla Firefox and IE
 
 # + Ideas (with more time):  
