@@ -1,59 +1,6 @@
-//
-//
-// In the backend, use an external API
-// to get the currency rates.
-//
-//
-// Currency rates APIs:
-// => https://openexchangerates.org
-// => https://currencylayer.com
-// => http://fixer.io
-//
-//
-// The frontend has to communicate
-// only with your custom API.
-//
-//
-// The app should also display the following stats:
-// 1. Most popular destination currency
-// 2. Total amount converted (in USD)
-// 3. Total number of conversion requests made
-//
-//
-// Make sure the stats are not cleared on restart and are
-// aggregate for all visitors. This means they have to be
-// calculated and stored in the backend.
-//
-//
-// Do not use locally installed database. You can use local
-// file, free version of some cloud database or any other
-// method.
-//
-//
 // Your app should not require any pre-requisites. It should
 // run on any machine with latest LTS version of Node.
 // Alternatively you can create a Docker image.
-//
-//
-// set up CORS
-//
-//
-// LATER: maybe return multiple popular destinations if they're equal?
-//
-//
-// > When building the API, consider it public. Other developers
-// > might use it so make sure it's understandable, validate
-// > inputs, etc.
-//
-//
-// > Expect the app will be later developed further by someone
-// > else. Write your code with that in mind
-//
-//
-// > Make sure you deal with possible errors etc.
-//
-// > Lastly, maybe setting up Gulp for minification etc.?
-// > Icon for the tab maybe
 
 "use strict";
 
@@ -64,15 +11,19 @@ const jsonParser = require("body-parser").json;
 const fs = require("fs");
 const logger = require("morgan");
 
-const routes_stats = require("./routes/routes_stats");
-const routes_convert = require("./routes/routes_convert");
+// Data
 const data = fs.readFileSync("stats.json");
 const stats = JSON.parse(data);
 
-// parsing the req body as JSON
+// Routes
+const routes_stats = require("./routes/routes_stats");
+const routes_convert = require("./routes/routes_convert");
+
+// Parsing the req body as JSON
 // making it accessible from the req.body property
 app.use(jsonParser());
 
+// Getting info about requests in the console
 app.use(logger("dev"));
 
 // Allowing Cross-Origin Resource Sharing
@@ -86,19 +37,18 @@ app.use((req, res, next) => {
   next();
 });
 
-// the routes module will try to apply one of the handlers
+// The routes will try to apply one of the handlers
 app.use("/stats", routes_stats);
-// the routes module will try to apply one of the handlers
 app.use("/convert", routes_convert);
 
-// catch 404 and forward to error handler
+// Catch 404 and forward to error handler
 app.use((req, res, next) => {
   const err = new Error("Not Found");
   err.status = 404;
   next(err);
 });
 
-// error handler
+// Error handler
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.json({
@@ -108,6 +58,7 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Setting the PORT for the API to run on
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {

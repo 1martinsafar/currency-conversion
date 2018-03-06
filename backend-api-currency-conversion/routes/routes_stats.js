@@ -9,17 +9,18 @@ const data = fs.readFileSync("stats.json");
 const stats = JSON.parse(data);
 console.log(stats);
 
+// For fetching data from an external API
 const axios = require("axios");
 
 // 1.
-// GET - get the Most popular destination currency
+// GET /stats/popular
+// Route for getting the Most popular destination currency
 router.get("/popular", (req, res) => {
-  console.log(">>> Getting MOST POPULAR DESTINATION.");
+  console.log(">>> Getting: Most popular destination.");
   const destinations = stats.mostPopular;
-  let reply;
   let count = 0;
   let index = 0;
-
+  // Index will match the destination with the highest number
   for (let i = 0; i < destinations.length; i++) {
     if (destinations[i]["conversions"] > count) {
       count = destinations[i]["conversions"];
@@ -29,21 +30,23 @@ router.get("/popular", (req, res) => {
   res.send(destinations[index]["currency"]);
 });
 
-// POST - update the list of popular destinations
+// POST /stats/popular/:name
+// Route for updating the list of popular destinations
 router.post("/popular/:name", (req, res) => {
+  console.log(">>> Updating: popular destinations.");
   const name = req.params.name.toLowerCase();
   const destinations = stats["mostPopular"];
   let present = false;
   for (let i = 0; i < destinations.length; i++) {
-    console.log("UPDATING:", name);
-    console.log("CHECKING:", destinations[i].currency);
-    console.log("EQUALS:", destinations[i].currency === name);
+    console.log("Updating curency:", name);
+    // If the currency is in the list, increase the popularity by 1
     if (destinations[i].currency === name) {
       destinations[i].conversions += 1;
       present = true;
       break;
     }
   }
+  // If the currency hasn't been used, add it to the list
   if (!present) {
     const newDestination = {
       "currency": name,
@@ -51,101 +54,105 @@ router.post("/popular/:name", (req, res) => {
     };
     destinations.push(newDestination);
   }
+  // Formatting the stats.json file to be easy to read
   const data = JSON.stringify(stats, null, 2);
   fs.writeFile("stats.json", data, err => {
     if (err) {
-      throw err;
-    } else {
-      console.log(">>> DONE updating the MOST POPULAR DESTINATIONS");
+      //throw "Error writing to the most popular currencies!";
     }
   });
   let reply = {
     msg: "Popular destinations updated",
     destinations: stats.mostPopular
   };
-  console.log(">>> reply\n", reply);
   res.json(reply);
 });
 
 // 2.
-// GET - get the total amount converted (in USD)
+// GET /stats/amount
+// Route for getting the total amount converted (in USD)
 router.get("/amount", (req, res) => {
-  console.log(">>> Getting TOTAL AMOUNT.");
-  res.json(stats.amountConverted);
+  console.log(">>> Getting: Total amount.");
+  res.send(stats.amountConverted);
 });
-// PUT - update the total amount converted by the searched value
-router.put("/amount/:number", (req, res) => {
-  console.log(">>> Updating TOTAL AMOUNT.");
-  console.log("BEFORE: ", stats["amountConverted"]);
-  const amount = Number(req.params.number);
 
+// PUT /stats/amount/:number
+// Route for updating the total amount converted by the searched value
+router.put("/amount/:number", (req, res) => {
+  console.log(">>> Updating: Total amount.");
+  const amount = Number(req.params.number);
   let reply;
 
   if (!amount) {
     reply = {
       msg: "An amount is required."
     }
-  response.send(reply);
+  response.json(reply);
   } else {
     stats["amountConverted"] += amount;
+    // Formatting the stats.json file to be easy to read
     const data = JSON.stringify(stats, null, 2);
     fs.writeFile("stats.json", data, err => {
       if (err) {
-        throw err;
+        //throw "Error writing to the amount converted!";
       } else {
         reply = {
           amountAdded: amount,
           total: stats["amountConverted"]
         }
-        console.log("The AMOUNT has been updated.");
-        console.log("AFTER: ", stats["amountConverted"]);
       }
-      res.send(reply);
+      res.json(reply);
     });
   }
 });
 
 // 3.
-// GET - get the total number of conversion requests made
+// GET /stats/conversions
+// Route for getting the total number of conversion requests made
 router.get("/conversions", (req, res) => {
-  console.log(">>> Getting NUMBER OF CONVERSIONS.");
-  res.json(stats.requestsNumber);
+  console.log(">>> Getting: Number of conversions.");
+  res.send(stats.requestsNumber);
 });
-// PUT - update the number of conversion requests for the searched currency
+
+// PUT /stats/conversions
+// Route for updating the number of conversion requests for the searched currency
 router.put("/conversions", (req, res) => {
-  console.log(">>> Updating TOTAL AMOUNT +1.");
-  console.log("BEFORE: ", stats["requestsNumber"]);
+  console.log(">>> Updating: Number of conversions +1.");
   stats["requestsNumber"] += 1;
   let reply;
   const data = JSON.stringify(stats, null, 2);
   fs.writeFile("stats.json", data, err => {
     if (err) {
-      throw err;
+      //throw "Error writing to the requests number!";
     } else {
       reply = {
         msg: "The number of requests has been increased by 1.",
         requestsNumber: stats["requestsNumber"]
       }
-      res.send(reply);
+      res.json(reply);
     }
   });
 });
 
-// CURRENCY OPTIONS
+// GET Currency Options from an external API
 const getCurrencies = () => {
+  console.log("Fetching the available currencies from an external API.");
   const results = axios.get(`http://api.fixer.io/latest`)
   .then( response => {
     return response.data;
   })
   .catch( err => {
     console.log(err);
+    //throw "Error accessing external API's currency options!";
   })
   return results;
 };
 
-// GET - get a list of names of all the available currencies
+// 4.
+// GET /stats/currencies
+// Route for getting a list of names of all the available currencies
 router.get("/currencies", (req, res) => {
-  console.log(">>> Getting all the currency names");
+  console.log(">>> Getting: All available currency names.");
   getCurrencies()
   .then( response => {
     const currencies = Object.keys(response.rates);
@@ -153,10 +160,11 @@ router.get("/currencies", (req, res) => {
       "msg": "Available currencies",
       "currencies": currencies
     };
-    res.send(reply);
+    res.json(reply);
   })
   .catch( err => {
     console.log(err);
+    //throw "Error accessing external API's currency options!";
   })
 });
 
