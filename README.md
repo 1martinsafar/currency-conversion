@@ -4,6 +4,8 @@
 # Use `npm install` in each app's root folder to install the required project dependencies before running the apps
 # The Frontend app is responsive/mobile-friendly and should work fine in Google Chrome, Mozilla Firefox and IE
 
+# NOTE: The Frontend React is not "optimized" so that all the original code could be checked in its original form, create-react-app might suggest running `npm run build` to create the production build
+
 # + Ideas (with more time):  
 => For minification/concatenation etc. I could use `GULP`  
 => `Sass` could be used  
