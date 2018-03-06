@@ -18,6 +18,10 @@ const axios = require("axios");
 router.get("/popular", (req, res) => {
   console.log(">>> Getting: Most popular destination.");
   const destinations = stats.mostPopular;
+  if (destinations.length < 1) {
+    console.log("No currency has been used yet.");
+    return res.json("");
+  }
   let count = 0;
   let index = 0;
   // Index will match the destination with the highest number
@@ -27,7 +31,7 @@ router.get("/popular", (req, res) => {
       index = i;
     }
   }
-  res.send(destinations[index]["currency"]);
+  res.json(destinations[index]["currency"]);
 });
 
 // POST /stats/popular/:name
@@ -73,7 +77,7 @@ router.post("/popular/:name", (req, res) => {
 // Route for getting the total amount converted (in USD)
 router.get("/amount", (req, res) => {
   console.log(">>> Getting: Total amount.");
-  res.send(stats.amountConverted);
+  res.json(stats.amountConverted);
 });
 
 // PUT /stats/amount/:number
@@ -81,29 +85,27 @@ router.get("/amount", (req, res) => {
 router.put("/amount/:number", (req, res) => {
   console.log(">>> Updating: Total amount.");
   const amount = Number(req.params.number);
+  console.log(amount);
+  if (amount < 0 || Number.isNaN(amount)) {
+    console.log("Invalid amount entered!");
+    return res.json({ "error": "Invalid amount entered!"});
+  }
   let reply;
 
-  if (!amount) {
-    reply = {
-      msg: "An amount is required."
-    }
-  response.json(reply);
-  } else {
-    stats["amountConverted"] += amount;
-    // Formatting the stats.json file to be easy to read
-    const data = JSON.stringify(stats, null, 2);
-    fs.writeFile("stats.json", data, err => {
-      if (err) {
-        //throw "Error writing to the amount converted!";
-      } else {
-        reply = {
-          amountAdded: amount,
-          total: stats["amountConverted"]
-        }
+  stats["amountConverted"] += amount;
+  // Formatting the stats.json file to be easy to read
+  const data = JSON.stringify(stats, null, 2);
+  fs.writeFile("stats.json", data, err => {
+    if (err) {
+      //throw "Error writing to the amount converted!";
+    } else {
+      reply = {
+        amountAdded: amount,
+        total: stats["amountConverted"]
       }
-      res.json(reply);
-    });
-  }
+    }
+    res.json(reply);
+  });
 });
 
 // 3.
@@ -111,7 +113,7 @@ router.put("/amount/:number", (req, res) => {
 // Route for getting the total number of conversion requests made
 router.get("/conversions", (req, res) => {
   console.log(">>> Getting: Number of conversions.");
-  res.send(stats.requestsNumber);
+  res.json(stats.requestsNumber);
 });
 
 // PUT /stats/conversions

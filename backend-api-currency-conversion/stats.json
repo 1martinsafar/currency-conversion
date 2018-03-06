@@ -1,5 +1,10 @@
 {
-  "mostPopular": [],
-  "amountConverted": 0,
+  "mostPopular": [
+    {
+      "currency": "czk",
+      "conversions": 1
+    }
+  ],
+  "amountConverted": 15,
   "requestsNumber": 0
 }

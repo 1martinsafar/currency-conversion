@@ -39,7 +39,7 @@ router.get("/:from/:to", (req, res) => {
   const to = req.params.to.toUpperCase();
   getRate(from, to)
   .then( response => {
-    if (!response || !respons.rates[to]) {
+    if (!response || !response.rates[to]) {
       console.log("Error - invalid currency/ies!");
       return res.json({ "error": "invalid currency/ies!" });
     }
