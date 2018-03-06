@@ -2,7 +2,7 @@
 # Use `node app.js` to start the API server, port: 3000 by default
 # Use `npm start` to run the React using the create-react-app, if asked about port, type `y`
 # Use `npm install` to install the required project dependencies before running the apps
-# The Frontend app is responsive/mobile-friendly and should work fine on Google Chrome, Mozilla Firefox and IE
+# The Frontend app is responsive/mobile-friendly and should work fine in Google Chrome, Mozilla Firefox and IE
 
 # + Ideas (with more time):
 => For minification/concatenation etc. I could use `GULP`
