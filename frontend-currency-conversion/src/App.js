@@ -29,7 +29,23 @@ class App extends Component {
 
   // Using custom API to get a list of available currencies
   // and settings the default from/to values
-  componentWillMount() {
+  componentDidMount() {
+    // GET list of currencies, set the default currency and get its USD rate
+    this.getCurrencies();
+    // GET the most popular currency destination
+    this.getMostPopular();
+    // GET the total amount converted (in USD)
+    this.getTotalConverted();
+    // GET the total number of conversion requests made
+    this.getTotalRequests();
+    console.log("FINISHED: Component DID MOUNT TEST");
+  } // end of componentDidMount //
+
+  //
+  // DATA FETCHING FUNCTIONS
+  //
+
+  getCurrencies = () => {
     // GET list of currencies, set the default currency and get its USD rate
     axios.get(`http://localhost:3000/stats/currencies`)
       .then(res => {
@@ -44,12 +60,15 @@ class App extends Component {
       .catch(error => {
         console.log('Error fetching and parsing data', error);
       });
+  }
 
+  getMostPopular = () => {
     // GET the most popular currency destination
     axios.get(`http://localhost:3000/stats/popular`)
       .then(res => {
         console.log("FETCHING most popular");
         const mostPopular = res.data;
+        console.log("NOW: most popular:", mostPopular);
         this.setState({
           mostPopular
         });
@@ -57,12 +76,15 @@ class App extends Component {
       .catch(error => {
         console.log('Error fetching and parsing data', error);
       });
+  }
 
+  getTotalConverted = () => {
     // GET the total amount converted (in USD)
     axios.get(`http://localhost:3000/stats/amount`)
       .then(res => {
         console.log("FETCHING total amount");
         const totalAmount = Math.round(res.data);
+        console.log("NOW: total Amount:", totalAmount);
         this.setState({
           totalAmount
         });
@@ -70,22 +92,82 @@ class App extends Component {
       .catch(error => {
         console.log('Error fetching and parsing data', error);
       });
+  }
 
-      // GET the total number of conversion requests made
-      axios.get(`http://localhost:3000/stats/conversions`)
-        .then(res => {
-          console.log("FETCHING total requests");
-          const conversions = res.data;
-          this.setState({
-            conversions
-          });
-        })
-        .catch(error => {
-          console.log('Error fetching and parsing data', error);
+  getTotalRequests = () => {
+    // GET the total number of conversion requests made
+    axios.get(`http://localhost:3000/stats/conversions`)
+      .then(res => {
+        console.log("FETCHING total requests");
+        const conversions = res.data;
+        console.log("NOW: total conversions:", conversions);
+        this.setState({
+          conversions
         });
+      })
+      .catch(error => {
+        console.log('Error fetching and parsing data', error);
+      });
+  }
 
-    console.log("FINISHED: Component WILL MOUNT");
-  } // end of componentWillMount //
+  //
+  // DATA SAVING FUNCTIONS
+  //
+
+  // Update the popularity of currency destinations
+  saveDestination = () => {
+    console.log(">>> SAVING: Destination");
+    const destination = this.state.to;
+    // PUT to stats/popular/:destination
+    axios.post(`http://localhost:3000/stats/popular/${destination}`)
+    .then(res => {
+      console.log("SAVED DESTINATION");
+      console.log(res.data);
+      this.getMostPopular();
+    })
+    .catch(error => {
+      console.log('Error updating data', error);
+    });
+  }
+
+  // Save the converted amount in USD
+  saveAmount = () => {
+    console.log(">>> SAVING: Amount in USD");
+    const amount = Number(this.state.amount);
+    const rateUSD = this.state.rateUSD;
+    const amountUSD = amount * rateUSD;
+    // PUT to the stats/amount/:number
+    axios.put(`http://localhost:3000/stats/amount/${amountUSD}`)
+    .then(res => {
+      console.log("SAVED converted amount in USD");
+      console.log(res.data);
+      const totalAmount = Math.round(res.data.total);
+      this.setState({totalAmount});
+    })
+    .catch(error => {
+      console.log('Error updating data', error);
+    });
+  }
+
+  // Increase the number of total conversion requests made on the web page by 1
+  saveRequest = () => {
+    console.log(">>> SAVING: Request");
+    // PUT to stats/conversions
+    axios.put(`http://localhost:3000/stats/conversions`)
+    .then(res => {
+      console.log("SAVED REQUEST");
+      console.log(res.data);
+      const conversions = res.data.requestsNumber;
+      this.setState({conversions});
+    })
+    .catch(error => {
+      console.log('Error updating data', error);
+    });
+  }
+
+  //
+  // APP FUNCTIONS
+  //
 
   // Creating the list of available currency options
   createOptions = () => {
@@ -178,52 +260,6 @@ class App extends Component {
     const amount = Number(value.replace(re, ""));
     this.setState({
       amount
-    });
-  }
-
-  // Update the popularity of currency destinations
-  saveDestination = () => {
-    console.log(">>> SAVING: Destination");
-    const destination = this.state.to;
-    // PUT to stats/popular/:destination
-    axios.post(`http://localhost:3000/stats/popular/${destination}`)
-    .then(res => {
-      console.log("SAVED DESTINATION");
-      console.log(res.data);
-    })
-    .catch(error => {
-      console.log('Error updating data', error);
-    });
-  }
-
-  // Save the converted amount in USD
-  saveAmount = () => {
-    console.log(">>> SAVING: Amount in USD");
-    const amount = Number(this.state.amount);
-    const rateUSD = this.state.rateUSD;
-    const amountUSD = amount * rateUSD;
-    // PUT to the stats/amount/:number
-    axios.put(`http://localhost:3000/stats/amount/${amountUSD}`)
-    .then(res => {
-      console.log("SAVED converted amount in USD");
-      console.log(res.data);
-    })
-    .catch(error => {
-      console.log('Error updating data', error);
-    });
-  }
-
-  // Increase the number of total conversion requests made on the web page by 1
-  saveRequest = () => {
-    console.log(">>> SAVING: Request");
-    // PUT to stats/conversions
-    axios.put(`http://localhost:3000/stats/conversions`)
-    .then(res => {
-      console.log("SAVED REQUEST");
-      console.log(res.data);
-    })
-    .catch(error => {
-      console.log('Error updating data', error);
     });
   }
 
